@@ -1,81 +1,97 @@
 #include<stdio.h>
-#include<conio.h>
-struct node
-{
-int info;
-struct node *next;
-
-}*top=NULL,*n;
-void InsertAtBeg();
-void DeleteAtBeg();
+#define MAX 10
+int top=-1;
+void Push();
+void Pop();
 void display();
-//int underflow();
+int Underflow();
+int Overflow();
+int stack[MAX];
 
 void main()
 {
- int ch;
+ char ch;
  do
  {
   clrscr();
-  printf("\n 1.InsertAtBeg\n 2.DeleteAtBeg\n 3.Display\n 4.Exit");
+  printf("\n 1.Push\n 2.Pop\n 3.Display\n 4.Exit");
   printf("\n Enter your choice:");
-  scanf("%d",&ch);
+  ch=getch();
   switch(ch)
   {
-    case 1:InsertAtBeg();break;
-    case 2:display();DeleteAtBeg();break;
-    case 3:display();break;
-    case 4:exit(0);
+    case '1':clrscr();display();Push();break;
+    case '2':clrscr();display();Pop();break;
+    case '3':clrscr();display();break;
+    case '4':exit(0);
     default:printf("\n Invalid choice...");
   }
-
- } while(ch!=4);
-
+   getch();
+ } while(ch!='4');
 }
 
-void InsertAtBeg()
+void Push()
 {
-  n=(struct node*)malloc(sizeof(struct node));
-   if(top==NULL)
-      printf("List is empty...");
+ if(Overflow())
+     printf("\n stack is full...");
   else
   {
-  printf("\n Enter the item:");
-  scanf("%d",&n->info);
-  n->next=top;
-  top=n;
-  printf("%d is pushed onto stack",n->info);
-
+    int item;
+    printf("\n Enter the item:");
+    scanf("%d",&item);
+    top++;
+    stack[top]=item;
+    printf("\n %d is pushed on to stack...");
   }
+
 }
-void DeleteAtBeg()
+
+void Pop()
 {
-  if(top==NULL)
-     printf("\n Underflow");
+  if(Underflow())
+     printf("\nstack is empty...");
+ else
+ {
+ int item;
+ item=stack[top];
+ top--;
+ printf("\n %d is poped from stack",item);
 
-  else
-  {
-    n=top;
-    top=top->next;
-    printf("\n %d is poped from stack",n->info);
-    free(n);
-  }
-}
+
+ }
+ }
+
 
 void display()
 {
-  if(top==NULL)
-     printf("\nstack is empty: ");
+  if(Underflow())
+      printf("\n Stack is empty..");
    else
    {
-     printf("stack is...");
-     n=top;
-     while(n!=NULL)
-     {
-     printf("\n %d",n->info);
-     n=n->next;
-
-     }
+   int i;
+   printf("stack is...") ;
+   printf("\nTop->");
+   for(i=top;i>=0;i--)
+   {
+   printf("\t|%d|\n",stack[i]);
+   printf("\t----\n");
 
    }
+   printf("\n========================");
+   }
+}
+
+int Overflow()
+{
+  if(top==MAX-1)
+    return 1;
+  else
+  return 0;
+}
+
+int Underflow()
+{
+  if(top==-1)
+    return 1;
+  else return 0;
+
 }
